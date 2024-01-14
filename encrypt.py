@@ -18,53 +18,54 @@ def resize_image(cover, message):
 
 # Fungsi enkripsi gambar
 def encryptPage():
+    # Unggah gambar cover
     st.markdown("<h4 style='text-align: left;'>Upload Cover Image</h4>", unsafe_allow_html=True)
     cover_file = st.file_uploader('', type=['png', 'jpg', 'bmp'], key="cover")
     if cover_file is not None:
         cover = Image.open(cover_file)
 
-        # Get the message image from the user
+        # Unggah gambar pesan
         st.markdown("<h4 style='text-align: left;'>Upload Message Image</h4>", unsafe_allow_html=True)
         message_file = st.file_uploader('', type=['png', 'jpg', 'bmp'], key="message")
         if message_file is not None:
             message = Image.open(message_file)
 
-            # Check if the message image is in CMYK format
+            # Mengecek apakah gambar dalam format CMYK atau RGB
             if message.mode == 'CMYK':
-                # Convert the message image to RGB format
+                # Mengonversi ke RGB jika gambar dalam format CMYK
                 message = message.convert('RGB')
 
-            # Resize the cover image to match the message image size
+            # Menyamakan ukuran gambar cover dengan gambar pesan
             cover = resize_image(cover, message)
 
-            # Change to double to work with addition below
+            # Ubah ke array untuk manipulasi
             cover = np.array(cover, dtype=np.uint8)
             message = np.array(message, dtype=np.uint8)
 
-            # Imbed = no. of bits of message image to embed in cover image
+            # "Imbed" adalah jumlah bit dari gambar pesan yang akan disematkan dalam gambar sampul
             imbed = 4
 
-            # Shift the message image over (8-imbed) bits to right
+            # Menggeser gambar pesan sebanyak (8 - imbed) bit ke kanan
             messageshift = message >> (8-imbed)
 
-            # Show the message image with only embed bits on screen
-            # Must shift from LSBs to MSBs
+            # Tampilkan gambar pesan hanya dengan bit yang disematkan di layar
+            # Harus digeser dari LSB (bit paling rendah) ke MSB (bit paling tinggi)
             showmess = messageshift << (8-imbed)
 
-            # Now zero out imbed bits in cover image
+            # Sekarang, ubah nilai bit yang disematkan menjadi nol pada gambar sampul
             coverzero = cover & (255 << imbed)
 
-            # Now add message image and cover image
+            # Sekarang tambahkan gambar pesan dan gambar sampul
             stego = coverzero + messageshift
 
-            # Display the stego image
+            # Tampilkan gambar stego
             st.image(stego, caption='This is your stego image')
 
-            # Now add message image and cover image
+            # Sekarang, tambahkan gambar pesan dan gambar sampul
             stego = coverzero + messageshift
 
-            # Convert the stego array back to an image
+            # Ubah kembali array stego menjadi gambar
             stego_img = Image.fromarray(stego.astype(np.uint8))
 
-            # Add a download link for the stego image
+            # Tambahkan link unduhan
             st.markdown(get_image_download_link(stego_img, 'stego.png', 'Download Stego Image'), unsafe_allow_html=True)
