@@ -3,7 +3,6 @@ from PIL import Image
 import numpy as np
 from decrypt import decryptPage
 from encrypt import encryptPage
-from readme import readmePage
 
 st.set_page_config(page_title="LSB Stego App", page_icon=":eyes:", layout="wide")
 
@@ -11,14 +10,11 @@ st.set_page_config(page_title="LSB Stego App", page_icon=":eyes:", layout="wide"
 st.title('LSB Steganography')
 st.header('Cover and extract your secret message 👀')
 
-st.write('Dont forget read the readme page first!')
-
 st.write("---")
 
 PAGES = {
     "Encrypt" : encryptPage,
     "Decrypt": decryptPage,
-    "Readme" : readmePage
 }
 
 st.sidebar.title("What You Want to Do?")

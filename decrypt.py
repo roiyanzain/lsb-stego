@@ -13,7 +13,8 @@ def get_image_download_link(img, filename, text):
 
 # Get the stego image from the user
 def decryptPage():
-    stego_file = st.file_uploader('Enter stego image file', type=['png', 'jpg', 'bmp', 'tiff'])
+    st.markdown("<h4 style='text-align: left;'>Upload Stego Image</h4>", unsafe_allow_html=True)
+    stego_file = st.file_uploader('', type=['png', 'jpg', 'bmp', 'tiff'],key="decrypt")
     if stego_file is not None:
         stego = Image.open(stego_file)
 
@@ -32,10 +33,10 @@ def decryptPage():
 
         # Convert the extracted message back to CMYK
         extracted_message = Image.fromarray(extracted_message)
-        extracted_message = extracted_message.convert("CMYK")
+        # extracted_message = extracted_message.convert("CMYK")
 
         # Display the extracted message
-        st.image(extracted_message, caption='Extracted Message')
+        st.image(extracted_message, caption='This is your hidden message')
 
         # Add a download link for the stego image
         st.markdown(get_image_download_link(extracted_message, 'result.jpg', 'Download extracted image'), unsafe_allow_html=True)
