@@ -7,9 +7,9 @@ from io import BytesIO
 # Fungsi untuk mendownload gambar stego ke dalam bentuk 'JPG'
 def get_image_download_link(img, filename, text):
     buffered = BytesIO()
-    img.save(buffered, format='JPG')
+    img.save(buffered, format='JPEG')
     img_str = base64.b64encode(buffered.getvalue()).decode()
-    href = f'<a href="data:image/JPG;base64,{img_str}" download="{filename}">{text}</a>'
+    href = f'<a href="data:image/JPEG;base64,{img_str}" download="{filename}">{text}</a>'
     return href
 
 # Fungsi dekripsi gambar
