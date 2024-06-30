@@ -63,10 +63,11 @@ def encryptPage():
             # Sekarang, ubah nilai bit yang disematkan menjadi nol pada gambar sampul
             coverzero = cover & ~(0b11111111 >> imbed)
 
-            # Sekarang tambahkan gambar pesan dan gambar sampul
-            stego = coverzero | messageshift
+            # Now, clear the imbed least significant bits of the cover image
+            mask = 0xFF << imbed  # Create a mask with the least significant `imbed` bits as 0
+            coverzero = cover & mask
 
-            stego = np.clip(stego, 0, 255)
+            stego = coverzero | messageshift
 
             # Tampilkan gambar stego
             st.image(stego, caption='This is your stego image', channels='GRAY')
