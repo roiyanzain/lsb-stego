@@ -60,9 +60,6 @@ def encryptPage():
             # Display the showmess image
             st.image(showmess, caption='This is your message image with the embedded bits')
 
-            # Sekarang, ubah nilai bit yang disematkan menjadi nol pada gambar sampul
-            coverzero = cover & ~(0b11111111 >> imbed)
-
             # Now, clear the imbed least significant bits of the cover image
             mask = 0xFF << imbed  # Create a mask with the least significant `imbed` bits as 0
             coverzero = cover & mask
